@@ -20,7 +20,8 @@ public class Carriable : MonoBehaviour
     [System.Serializable]
     public struct CachedData
     {
-        public bool isPlatformEffector, canPush;
+        public bool isPlatformEffector;
+        public PixelPerfectMover.PushBehaviour pushBehaviour;
     }
 
     [Header("Inscribed")]
@@ -48,7 +49,7 @@ public class Carriable : MonoBehaviour
         myMover = GetComponent<PixelPerfectMover>();
 
         whileAwake.isPlatformEffector = myPlatform.enabled;
-        whileAwake.canPush = myMover.canPush;
+        whileAwake.pushBehaviour = myMover.pushBehaviour;
 
         // Optional
         myMovingTransporter = GetComponent<MovingTransporter>();
@@ -155,7 +156,7 @@ public class Carriable : MonoBehaviour
                     }
                 }
 
-                myMover.canPush = false;
+                myMover.pushBehaviour = PixelPerfectMover.PushBehaviour.PASSTHROUGH;
 
                 break;
 
@@ -176,7 +177,7 @@ public class Carriable : MonoBehaviour
 
                 myCollider.enabled = true;
                 myPlatform.enabled = true;
-                myMover.canPush = false;
+                myMover.pushBehaviour = PixelPerfectMover.PushBehaviour.PASSTHROUGH;
 
                 break;
 
@@ -191,7 +192,7 @@ public class Carriable : MonoBehaviour
 
                 myCollider.enabled = true;
                 myPlatform.enabled = whileAwake.isPlatformEffector;
-                myMover.canPush = whileAwake.canPush;
+                myMover.pushBehaviour = whileAwake.pushBehaviour;
 
                 foreach (SpriteRenderer renderer in renderers)
                 {

@@ -6,12 +6,19 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class PixelPerfectMover : MonoBehaviour
 {
+    public enum PushBehaviour
+    {
+        PUSH,
+        BLOCKED, 
+        PASSTHROUGH,
+    }
+
     static bool PUSH_LOCK;
 
     [Header("Inscribed")]
     public ContactFilter2D collisionMask;
     public ContactFilter2D pushMask;
-    public bool canPush;
+    public PushBehaviour pushBehaviour = PushBehaviour.PUSH;
 
     [Header("Dynamic")]
     [SerializeField] Collider2D myCollider;
@@ -90,20 +97,22 @@ public class PixelPerfectMover : MonoBehaviour
         {
             success = true;
 
-            int i = 0;
-            List<Collider2D> pushables = CollideArea(direction, pushMask);
-            for (i = 0; i < pushables.Count; i++)
+            if (pushBehaviour != PushBehaviour.PASSTHROUGH)
             {
-                if (PUSH_LOCK || !canPush)
+                List<Collider2D> pushables = CollideArea(direction, pushMask);
+                for (int i = 0; i < pushables.Count; i++)
                 {
-                    success = false;
-                    break;
-                }
+                    if (PUSH_LOCK || pushBehaviour == PushBehaviour.BLOCKED)
+                    {
+                        success = false;
+                        break;
+                    }
 
-                // Prevent recursive pushes
-                PUSH_LOCK = true;
-                pushables[i].GetComponent<PixelPerfectMover>().Move(direction);
-                PUSH_LOCK = false;
+                    // Prevent recursive pushes
+                    PUSH_LOCK = true;
+                    pushables[i].GetComponent<PixelPerfectMover>().Move(direction);
+                    PUSH_LOCK = false;
+                }
             }
 
             position += direction;

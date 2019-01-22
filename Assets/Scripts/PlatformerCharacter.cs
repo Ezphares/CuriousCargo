@@ -29,8 +29,6 @@ public class PlatformerCharacter : MonoBehaviour
     [SerializeField] Carriable carried;
     [SerializeField] Vector3 facing;
 
-
-
     private void Awake()
     {
         myMover = GetComponent<PixelPerfectMover>();
@@ -52,8 +50,6 @@ public class PlatformerCharacter : MonoBehaviour
             scale.x = facing.x;
             transform.localScale = scale;
         }
-
-
 
         grounded = myMover.CollideArea(Vector2Int.down, myMover.collisionMask).Count > 0;
                     
@@ -158,14 +154,7 @@ public class PlatformerCharacter : MonoBehaviour
             }
             else
             {
-                foreach (MultiPartCharacter.CharacterPart part in myMultipart.parts)
-                {
-                    Rigidbody2D prb = part.transform.gameObject.AddComponent<Rigidbody2D>();
-                    prb.AddForce(Random.insideUnitCircle * 32f + Vector2.up * 64f, ForceMode2D.Impulse);
-                    prb.AddTorque(Random.Range(1f, 10f), ForceMode2D.Impulse);
-                    part.transform.parent = null;
-                }
-                Destroy(gameObject);
+                Kill();
             }
         }
     }
@@ -178,6 +167,20 @@ public class PlatformerCharacter : MonoBehaviour
     public void Move(Vector2 movement)
     {
         myMover.Move(movement);
+    }
+
+    public void Kill()
+    {
+        foreach (MultiPartCharacter.CharacterPart part in myMultipart.parts)
+        {
+            Rigidbody2D prb = part.transform.gameObject.AddComponent<Rigidbody2D>();
+            prb.AddForce(Random.insideUnitCircle * 32f + Vector2.up * 64f, ForceMode2D.Impulse);
+            prb.AddTorque(Random.Range(1f, 10f), ForceMode2D.Impulse);
+            part.transform.parent = null;
+        }
+        Destroy(carryCollider.gameObject);
+        Destroy(gameObject);
+
     }
 
     void TryPickUp()

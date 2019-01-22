@@ -17,6 +17,12 @@ public class Carriable : MonoBehaviour
         Carried,
     }
 
+    [System.Serializable]
+    public struct CachedData
+    {
+        public bool isPlatformEffector, canPush;
+    }
+
     [Header("Inscribed")]
     public bool canPickUp = true;
     
@@ -27,9 +33,10 @@ public class Carriable : MonoBehaviour
     [SerializeField] PassiveObject myPassiveObject;
     [SerializeField] Collider2D myCollider;
     [SerializeField] PlatformEffector2D myPlatform;
+    [SerializeField] PixelPerfectMover myMover;
     [SerializeField] IEnemy myEnemyBehaviour;
     [SerializeField] float recoverTime;
-    [SerializeField] bool effectorWhileAwake;
+    [SerializeField] CachedData whileAwake;
     [SerializeField] SpriteRenderer[] renderers;
 
     private void Awake()
@@ -38,8 +45,10 @@ public class Carriable : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         myPassiveObject = GetComponent<PassiveObject>();
         myPlatform = GetComponent<PlatformEffector2D>();
+        myMover = GetComponent<PixelPerfectMover>();
 
-        effectorWhileAwake = myPlatform.enabled;
+        whileAwake.isPlatformEffector = myPlatform.enabled;
+        whileAwake.canPush = myMover.canPush;
 
         // Optional
         myMovingTransporter = GetComponent<MovingTransporter>();
@@ -146,6 +155,8 @@ public class Carriable : MonoBehaviour
                     }
                 }
 
+                myMover.canPush = false;
+
                 break;
 
             case SimulationType.PassiveSleep:
@@ -165,8 +176,7 @@ public class Carriable : MonoBehaviour
 
                 myCollider.enabled = true;
                 myPlatform.enabled = true;
-
-
+                myMover.canPush = false;
 
                 break;
 
@@ -180,7 +190,8 @@ public class Carriable : MonoBehaviour
                 }
 
                 myCollider.enabled = true;
-                myPlatform.enabled = effectorWhileAwake;
+                myPlatform.enabled = whileAwake.isPlatformEffector;
+                myMover.canPush = whileAwake.canPush;
 
                 foreach (SpriteRenderer renderer in renderers)
                 {

@@ -11,6 +11,7 @@ public class PixelPerfectMover : MonoBehaviour
     [Header("Inscribed")]
     public ContactFilter2D collisionMask;
     public ContactFilter2D pushMask;
+    public bool canPush;
 
     [Header("Dynamic")]
     [SerializeField] Collider2D myCollider;
@@ -93,7 +94,7 @@ public class PixelPerfectMover : MonoBehaviour
             List<Collider2D> pushables = CollideArea(direction, pushMask);
             for (i = 0; i < pushables.Count; i++)
             {
-                if (PUSH_LOCK)
+                if (PUSH_LOCK || !canPush)
                 {
                     success = false;
                     break;

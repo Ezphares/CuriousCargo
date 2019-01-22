@@ -18,6 +18,11 @@ public class PlatformerUserControl : MonoBehaviour
 
     }
 
+    private void OnDestroy()
+    {
+        GameManager.LevelLost();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -31,6 +36,11 @@ public class PlatformerUserControl : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             character.PickUp();
+        }
+
+        if (Input.GetButtonDown("Reset"))
+        {
+            character.Kill();
         }
 
         if (Input.GetAxis("Vertical") < 0.0f)

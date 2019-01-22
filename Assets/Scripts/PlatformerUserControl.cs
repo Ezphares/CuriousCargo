@@ -23,6 +23,15 @@ public class PlatformerUserControl : MonoBehaviour
         GameManager.LevelLost();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Goal")
+        {
+            GameManager.LevelWon();
+            Destroy(collision.gameObject);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {

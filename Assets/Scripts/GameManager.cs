@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,10 +13,12 @@ public class GameManager : MonoBehaviour
     [Header("Inscribed")]
     public SceneSelector[] levels;
     public FadePanel uIPanel;
+    public Text startPrompt;
 
     [Header("Dynamic")]
-    [SerializeField] int currentLevel;
-    [SerializeField] int loadedScene;
+    [SerializeField] [ReadOnly] int currentLevel;
+    [SerializeField] [ReadOnly] string loadedScene;
+    [SerializeField] [ReadOnly] bool levelStarted = false;
 
 
     private void Awake()
@@ -24,14 +26,22 @@ public class GameManager : MonoBehaviour
         INSTANCE = this;
 
         currentLevel = -1;
-        loadedScene = 0;
+        loadedScene = string.Empty;
     }
 
     private void Start()
     {
         uIPanel.OnFadeIn += NextLevel;
         uIPanel.OnFadeOut += StartLevel;
-        NextLevel();
+    }
+
+    private void Update()
+    {
+        if (startPrompt.gameObject.activeSelf && Input.GetButtonDown("Jump"))
+        {
+            startPrompt.gameObject.SetActive(false);
+            NextLevel();
+        }
     }
 
     private void OnDestroy()
@@ -42,15 +52,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    static public void LevelWon()
+    {
+        INSTANCE?.TryEndLevel(0.0f, true);
+    }
+
     static public void LevelLost()
     {
-        INSTANCE?.StartCoroutine(INSTANCE.EndLevelAfter(1.0f, false));
+        INSTANCE?.TryEndLevel(1.0f, false);
+    }
+
+    void TryEndLevel(float delay, bool won)
+    {
+        if (levelStarted)
+        {
+            levelStarted = false;
+            StartCoroutine(EndLevelAfter(delay, won));
+        }
     }
 
     IEnumerator EndLevelAfter(float delay, bool won)
     {
         yield return new WaitForSeconds(delay);
-        EndLevel(false);
+        EndLevel(won);
     }
 
     void EndLevel(bool won)
@@ -66,9 +90,9 @@ public class GameManager : MonoBehaviour
 
     void NextLevel()
     {
-        if (SceneManager.GetSceneByPath(levels[loadedScene].scenePath).isLoaded)
+        if (!string.IsNullOrEmpty(loadedScene) && SceneManager.GetSceneByPath(loadedScene).isLoaded)
         {
-            SceneManager.UnloadSceneAsync(levels[loadedScene].scenePath);
+            SceneManager.UnloadSceneAsync(loadedScene);
         }
 
         currentLevel = currentLevel + 1;
@@ -78,9 +102,12 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+
+        string scenePath = string.IsNullOrEmpty(testOverride.scenePath) ? levels[currentLevel].scenePath : testOverride.scenePath;
+
         SceneManager.sceneLoaded += SceneLoaded;
-        SceneManager.LoadSceneAsync(levels[currentLevel].scenePath, LoadSceneMode.Additive);
-        loadedScene = currentLevel;
+        SceneManager.LoadSceneAsync(scenePath, LoadSceneMode.Additive);
+        loadedScene = scenePath;
 
     }
 
@@ -92,6 +119,7 @@ public class GameManager : MonoBehaviour
 
     void StartLevel()
     {
+        levelStarted = true;
         Time.timeScale = 1.0f;
     }
 

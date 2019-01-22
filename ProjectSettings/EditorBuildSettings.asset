@@ -6,5 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/MooseStache/Demo/DemoScene-V1.2 FULL.unity
-    guid: 013ece14fa3401c4f943ce2ab0c7c5c5
+    path: Assets/Scenes/SampleScene.unity
+    guid: 2f2fb52ced6c658428155c947370a1e2
+  m_configObjects: {}

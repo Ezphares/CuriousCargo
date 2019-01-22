@@ -204,6 +204,10 @@ GameObject:
   - component: {fileID: 7597972514233722191}
   - component: {fileID: 7597972514233722190}
   - component: {fileID: 7597972514233722188}
+  - component: {fileID: 5642330956104953274}
+  - component: {fileID: 1535924820241389243}
+  - component: {fileID: 1085957868703069376}
+  - component: {fileID: 5727850206969602505}
   m_Layer: 10
   m_Name: Crawler Transporter
   m_TagString: Enemy
@@ -250,7 +254,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 16, y: 16}
+  m_Size: {x: 14, y: 14}
   m_EdgeRadius: 0
 --- !u!50 &7597972514233722189
 Rigidbody2D:
@@ -329,8 +333,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyGraphics: {fileID: 5881770666045415653}
+  targetVelocity: {x: -32, y: 0}
   myMover: {fileID: 0}
-  myCarrier: {fileID: 0}
   velocity: {x: 32, y: 0}
   down: {x: 0, y: -1}
 --- !u!114 &7597972514233722188
@@ -349,3 +353,72 @@ MonoBehaviour:
   connected: []
   velocity: {x: 0, y: 0}
   cachedPosition: {x: 0, y: 0}
+--- !u!114 &5642330956104953274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7597972514233722185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a56aed7a6830ac541804697b0b6d6271, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myMover: {fileID: 0}
+  sleeping: 0
+  velocity: {x: 0, y: 0}
+--- !u!114 &1535924820241389243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7597972514233722185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 564ab0c8833b11748bb2d665e59292b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canPickUp: 1
+  currentSimulationType: 0
+  myMovingTransporter: {fileID: 0}
+  myTransportable: {fileID: 0}
+  myPassiveObject: {fileID: 0}
+  myCollider: {fileID: 0}
+  myPlatform: {fileID: 0}
+  recoverTime: 0
+  effectorWhileAwake: 0
+  renderers: []
+--- !u!114 &1085957868703069376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7597972514233722185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c51ca24025d46c41a8454a65991bbdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myMover: {fileID: 0}
+--- !u!251 &5727850206969602505
+PlatformEffector2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7597972514233722185}
+  m_Enabled: 0
+  m_UseColliderMask: 0
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RotationalOffset: 0
+  m_UseOneWay: 1
+  m_UseOneWayGrouping: 1
+  m_SurfaceArc: 90
+  m_UseSideFriction: 0
+  m_UseSideBounce: 0
+  m_SideArc: 1

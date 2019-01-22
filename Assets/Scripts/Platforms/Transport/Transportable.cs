@@ -35,6 +35,11 @@ public class Transportable : MonoBehaviour
         Connect(newTransporter);
     }
 
+    private void OnDestroy()
+    {
+        Connect(null);
+    }
+
     void Connect(ITransporter transporter)
     {
         if (transporter != currentTransporter)

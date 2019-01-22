@@ -12,6 +12,7 @@ public class PlatformerCharacter : MonoBehaviour
     public float fallGravityModifier = 1.25f;
     public int standRequiredHeadroom = 16;
     public Transform carryPivot;
+    public Collider2D carryCollider;
 
     [Header("Dynamic")]
     [SerializeField] Vector2 pendingMovement;
@@ -55,7 +56,7 @@ public class PlatformerCharacter : MonoBehaviour
 
 
         grounded = myMover.CollideArea(Vector2Int.down, myMover.collisionMask).Count > 0;
-
+                    
         if (myMover.CollideArea(velocity.y > 0.0f ? Vector2Int.up : Vector2Int.down, myMover.collisionMask).Count > 0)
         {
             velocity.y = 0.0f;
@@ -185,35 +186,34 @@ public class PlatformerCharacter : MonoBehaviour
         {
             foreach (Collider2D collider in myMover.CollideArea(Vector2Int.down, myMover.collisionMask))
             {
-                if (collider.gameObject.tag == "Carry")
+                Carriable carriable = collider.GetComponent<Carriable>();
+                if (!carriable)
                 {
-                    Carriable carriable = collider.GetComponent<Carriable>();
-                    if (!carriable)
-                    {
-                        Debug.LogWarning("Detected gameobject with Carry tag but no Carriable component");
-                    }
-
-                    carried = carriable;
-                    carried.OnPickup();
-                    carried.transform.parent = carryPivot;
-                    carried.transform.localPosition = Vector2.zero;
-
-                    collider.usedByComposite = true;
-                    carried.GetComponent<PassiveObject>().enabled = false;
-
-                    break;
+                    continue;
                 }
+
+                carryCollider.enabled = true;
+
+                carried = carriable;
+                carried.OnPickup();
+                carried.transform.parent = carryPivot;
+                carried.transform.localPosition = Vector2.zero;
+
+                break;
             }
         }
     }
 
     void TryThrow()
     {
+        carryCollider.enabled = false;
+
         carried.GetComponent<PassiveObject>().Impulse(velocity + new Vector2(64.0f * facing.x, 50.0f));
-        carried.GetComponent<Collider2D>().usedByComposite = false;
+        carried.GetComponent<Collider2D>().enabled = true;
         carried.transform.parent = null;
         carried.OnDrop();
         carried = null;
+
     }
 
     public void Jump()

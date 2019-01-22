@@ -7,6 +7,7 @@ public class FollowCamera : MonoBehaviour
     [Header("Inscribed")]
     public Transform follow;
     public Tilemap containingMap;
+    public SpriteRenderer background;
 
     [Header("Dynamic")]
     [SerializeField] Camera myCamera;
@@ -22,6 +23,9 @@ public class FollowCamera : MonoBehaviour
         {
             containingMap.CompressBounds();
         }
+
+        background.size = containingMap.localBounds.size + Vector3.one * 16.0f;
+        background.transform.position = (containingMap.localBounds.center + containingMap.transform.position) + Vector3.forward * background.transform.position.z;
     }
 
 

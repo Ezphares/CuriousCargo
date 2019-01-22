@@ -10,7 +10,6 @@ public class PassiveObject : MonoBehaviour
     [SerializeField] bool sleeping;
     public Vector2 velocity;
 
-
     private void Awake()
     {
         myMover = GetComponent<PixelPerfectMover>();
@@ -48,12 +47,16 @@ public class PassiveObject : MonoBehaviour
         }
     }
 
-
     public void Impulse(Vector2 amount)
     {
         myMover.Move(transform.position, false);
         sleeping = false;
         velocity = amount;
         enabled = true;
+    }
+
+    public bool IsSleeping()
+    {
+        return sleeping;
     }
 }

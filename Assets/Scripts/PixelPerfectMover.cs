@@ -8,7 +8,6 @@ public class PixelPerfectMover : MonoBehaviour
 {
     static bool PUSH_LOCK;
 
-
     [Header("Inscribed")]
     public ContactFilter2D collisionMask;
     public ContactFilter2D pushMask;
@@ -137,7 +136,7 @@ public class PixelPerfectMover : MonoBehaviour
 
             bool hit = true;
             PlatformEffector2D effector = tempResults[i].transform.GetComponent<PlatformEffector2D>();
-            if (effector && effector.useOneWay)
+            if (effector && effector.enabled && effector.useOneWay)
             {
                 hit &= Vector2.Angle(offset, effector.transform.up) > effector.surfaceArc / 2;
                 hit &= Mathf.CeilToInt(myCollider.bounds.min.y) >= Mathf.FloorToInt(tempResults[i].bounds.max.y);

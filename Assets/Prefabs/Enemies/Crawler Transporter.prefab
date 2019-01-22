@@ -317,7 +317,7 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
-  canPush: 1
+  pushBehaviour: 0
   myCollider: {fileID: 0}
   position: {x: 0, y: 0}
   subPixelPositionCounter: {x: 0, y: 0}
@@ -382,6 +382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canPickUp: 1
+  recoverTime: 4
   currentSimulationType: 0
   myMovingTransporter: {fileID: 0}
   myTransportable: {fileID: 0}
@@ -389,10 +390,10 @@ MonoBehaviour:
   myCollider: {fileID: 0}
   myPlatform: {fileID: 0}
   myMover: {fileID: 0}
-  recoverTime: 0
+  recoverTimeLeft: 0
   whileAwake:
     isPlatformEffector: 0
-    canPush: 0
+    pushBehaviour: 0
   renderers: []
 --- !u!114 &1085957868703069376
 MonoBehaviour:

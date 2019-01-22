@@ -96,7 +96,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6922728563245714731
 Transform:
   m_ObjectHideFlags: 0
@@ -4955,6 +4955,7 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
+  pushBehaviour: 0
   myCollider: {fileID: 0}
   position: {x: 0, y: 0}
   subPixelPositionCounter: {x: 0, y: 0}
@@ -5018,5 +5019,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 564ab0c8833b11748bb2d665e59292b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canPickUp: 1
+  recoverTime: 0
+  currentSimulationType: 0
   myMovingTransporter: {fileID: 0}
   myTransportable: {fileID: 0}
+  myPassiveObject: {fileID: 0}
+  myCollider: {fileID: 0}
+  myPlatform: {fileID: 0}
+  myMover: {fileID: 0}
+  recoverTimeLeft: 0
+  whileAwake:
+    isPlatformEffector: 0
+    pushBehaviour: 0
+  renderers: []

@@ -26,6 +26,7 @@ public class Carriable : MonoBehaviour
 
     [Header("Inscribed")]
     public bool canPickUp = true;
+    public float recoverTime;
     
     [Header("Dynamic")]
     [SerializeField] SimulationType currentSimulationType;
@@ -36,7 +37,7 @@ public class Carriable : MonoBehaviour
     [SerializeField] PlatformEffector2D myPlatform;
     [SerializeField] PixelPerfectMover myMover;
     [SerializeField] IEnemy myEnemyBehaviour;
-    [SerializeField] float recoverTime;
+    [SerializeField] float recoverTimeLeft;
     [SerializeField] CachedData whileAwake;
     [SerializeField] SpriteRenderer[] renderers;
 
@@ -63,7 +64,7 @@ public class Carriable : MonoBehaviour
 
     private void Start()
     {
-        recoverTime = -1.0f;
+        recoverTimeLeft = -1.0f;
     }
 
     public void OnPickup()
@@ -97,10 +98,10 @@ public class Carriable : MonoBehaviour
         {
             if (myPassiveObject.IsSleeping())
             {
-                if (recoverTime > 0.0f)
+                if (recoverTimeLeft > 0.0f)
                 {
-                    recoverTime -= Time.fixedDeltaTime;
-                    if (recoverTime <= 0.0f)
+                    recoverTimeLeft -= Time.fixedDeltaTime;
+                    if (recoverTimeLeft <= 0.0f)
                     {
                         OnRecover();
                     }
@@ -108,7 +109,7 @@ public class Carriable : MonoBehaviour
                     foreach (SpriteRenderer renderer in renderers)
                     {
                         Color c = renderer.color;
-                        c.a = recoverTime % 0.8f >= 0.4f ? 0.3f : 1.0f;
+                        c.a = recoverTimeLeft % 0.8f >= 0.4f ? 0.3f : 1.0f;
                         renderer.color = c;
                     }
                 }
@@ -172,7 +173,7 @@ public class Carriable : MonoBehaviour
 
                 if (simulationType == SimulationType.PassiveSleep)
                 {
-                    recoverTime = 5.0f;
+                    recoverTimeLeft = recoverTime;
                 }
 
                 myCollider.enabled = true;

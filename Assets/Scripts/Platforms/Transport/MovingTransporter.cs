@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[RequireComponent(typeof(PixelPerfectMover))]
+[RequireComponent(typeof(AlignedBody2D))]
 public class MovingTransporter : MonoBehaviour, ITransporter
 {
     [Header("Dynamic")]
-    [SerializeField] PixelPerfectMover myMover;
+    [SerializeField] AlignedBody2D myMover;
     [SerializeField] List<Transportable> connected;
     [SerializeField] Vector2 velocity;
     [SerializeField] Vector2Int cachedPosition;
 
     private void Awake()
     {
-        myMover = GetComponent<PixelPerfectMover>();
+        myMover = GetComponent<AlignedBody2D>();
     }
 
 

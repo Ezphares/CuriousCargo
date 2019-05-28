@@ -242,8 +242,6 @@ MonoBehaviour:
     _scenePath: Assets/Scenes/Level 1-1.unity
   - scene: {fileID: 102900000, guid: e6a161d0ec7ed0546bfe2cd30abff8e5, type: 3}
     _scenePath: Assets/Scenes/Level 1-2.unity
-  - scene: {fileID: 0}
-    _scenePath: 
   uIPanel: {fileID: 173105622}
   startPrompt: {fileID: 1788395521}
   currentLevel: 0

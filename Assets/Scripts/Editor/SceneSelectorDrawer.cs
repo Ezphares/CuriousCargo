@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
+// With inspiration from https://gist.github.com/JohannesMP/ec7d3f0bcf167dab3d0d3bb480e0e07b
 [CustomPropertyDrawer(typeof(SceneSelector))]
 public class SceneSelectDrawer : PropertyDrawer
 {

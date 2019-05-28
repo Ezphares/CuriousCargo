@@ -1023,15 +1023,15 @@ PrefabInstance:
       propertyPath: m_ColliderPaths.Array.data[2].m_ColliderPaths.Array.data[0].Array.data[3].Y
       value: 250000000
       objectReference: {fileID: 0}
-    - target: {fileID: 3188797685703231747, guid: 12a6d591766723e49b58a9a88048d0df,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 3188797686807915830, guid: 12a6d591766723e49b58a9a88048d0df,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188797685703231747, guid: 12a6d591766723e49b58a9a88048d0df,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 12a6d591766723e49b58a9a88048d0df, type: 3}
@@ -1492,6 +1492,7 @@ GameObject:
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420035}
   - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
@@ -1524,6 +1525,7 @@ MonoBehaviour:
   containingMap: {fileID: 902817393}
   background: {fileID: 135416419}
   myCamera: {fileID: 0}
+  myBody: {fileID: 0}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -1657,6 +1659,28 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+--- !u!114 &519420035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af5aae319872b54da9204fea9ef3e95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 0
+  pushMask:
+    serializedVersion: 2
+    m_Bits: 0
+  pushBehaviour: 0
+  myCollider: {fileID: 0}
+  _position: {x: 0, y: 0}
+  subPixelPositionCounter: {x: 0, y: 0}
 --- !u!4 &555099574 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8774364203073739698, guid: 0301149306c39dd44a3f706620998fb8,
@@ -3354,7 +3378,7 @@ Transform:
 --- !u!199 &1034198286
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}

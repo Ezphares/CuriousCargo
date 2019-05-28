@@ -21,7 +21,7 @@ public class Carriable : MonoBehaviour
     public struct CachedData
     {
         public bool isPlatformEffector;
-        public PixelPerfectMover.PushBehaviour pushBehaviour;
+        public AlignedBody2D.PushBehaviour pushBehaviour;
     }
 
     [Header("Inscribed")]
@@ -35,7 +35,7 @@ public class Carriable : MonoBehaviour
     [SerializeField] PassiveObject myPassiveObject;
     [SerializeField] Collider2D myCollider;
     [SerializeField] PlatformEffector2D myPlatform;
-    [SerializeField] PixelPerfectMover myMover;
+    [SerializeField] AlignedBody2D myMover;
     [SerializeField] IEnemy myEnemyBehaviour;
     [SerializeField] float recoverTimeLeft;
     [SerializeField] CachedData whileAwake;
@@ -47,7 +47,7 @@ public class Carriable : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         myPassiveObject = GetComponent<PassiveObject>();
         myPlatform = GetComponent<PlatformEffector2D>();
-        myMover = GetComponent<PixelPerfectMover>();
+        myMover = GetComponent<AlignedBody2D>();
 
         whileAwake.isPlatformEffector = myPlatform.enabled;
         whileAwake.pushBehaviour = myMover.pushBehaviour;
@@ -157,7 +157,7 @@ public class Carriable : MonoBehaviour
                     }
                 }
 
-                myMover.pushBehaviour = PixelPerfectMover.PushBehaviour.PASSTHROUGH;
+                myMover.pushBehaviour = AlignedBody2D.PushBehaviour.PASSTHROUGH;
 
                 break;
 
@@ -178,7 +178,7 @@ public class Carriable : MonoBehaviour
 
                 myCollider.enabled = true;
                 myPlatform.enabled = true;
-                myMover.pushBehaviour = PixelPerfectMover.PushBehaviour.PASSTHROUGH;
+                myMover.pushBehaviour = AlignedBody2D.PushBehaviour.PASSTHROUGH;
 
                 break;
 

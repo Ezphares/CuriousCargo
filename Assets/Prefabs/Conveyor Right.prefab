@@ -52,8 +52,10 @@ MonoBehaviour:
   - {fileID: 21300002, guid: c7915505bb90c14408609513bd6238cf, type: 3}
   - {fileID: 21300004, guid: c7915505bb90c14408609513bd6238cf, type: 3}
   - {fileID: 21300006, guid: c7915505bb90c14408609513bd6238cf, type: 3}
-  fPS: 16
+  fPS: 0
+  distancePerFrame: 2
   position: 0
+  distanceTracker: 0
   frame: 0
 --- !u!61 &2245229216677018092
 BoxCollider2D:
@@ -93,6 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 247d1b465e96433499542c372c57d080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myFlipbook: {fileID: 0}
   connected: []
   velocity: {x: 32, y: 0}
   subPixelOffset: {x: 0, y: 0}

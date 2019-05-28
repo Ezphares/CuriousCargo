@@ -9,7 +9,7 @@ public class CrawlerEnemy : MonoBehaviour, IEnemy
 
 
     [Header("Dynamic")]
-    [SerializeField] PixelPerfectMover myMover;
+    [SerializeField] AlignedBody2D myMover;
     [SerializeField] Vector2 velocity;
     [SerializeField] Vector2 down;
 
@@ -17,7 +17,7 @@ public class CrawlerEnemy : MonoBehaviour, IEnemy
     // Use this for initialization
     void Start()
     {
-        myMover = GetComponent<PixelPerfectMover>();
+        myMover = GetComponent<AlignedBody2D>();
     }
 
     private void FixedUpdate()
@@ -25,7 +25,7 @@ public class CrawlerEnemy : MonoBehaviour, IEnemy
         Vector2Int delta = myMover.Move(velocity * Time.fixedDeltaTime);
 
         // Test can move down
-        if (delta.magnitude > 0.5f && myMover.CollideArea(Vector2Int.RoundToInt(down.normalized), myMover.collisionMask).Count == 0)
+        if (delta.magnitude > 0.5f && myMover.CollideArea(Vector2Int.RoundToInt(down.normalized)).Count == 0)
         {
             Vector2 newDown = -velocity;
 
@@ -33,7 +33,7 @@ public class CrawlerEnemy : MonoBehaviour, IEnemy
             down = newDown.normalized;
 
             // Check if we are flying freely
-            if (myMover.CollideArea((Vector2Int.CeilToInt(down) + Vector2Int.CeilToInt(velocity.normalized)) * 2, myMover.collisionMask).Count == 0)
+            if (myMover.CollideArea((Vector2Int.CeilToInt(down) + Vector2Int.CeilToInt(velocity.normalized)) * 2, AlignedBody2D.MaskSelection.COLLISION).Count == 0)
             {
                 Debug.Log(Vector2Int.CeilToInt(down));
                 Debug.Log(Vector2Int.CeilToInt(velocity.normalized));
@@ -44,7 +44,7 @@ public class CrawlerEnemy : MonoBehaviour, IEnemy
         }
 
         // Test if hitting wall
-        if (myMover.CollideArea(Vector2Int.RoundToInt(velocity.normalized), myMover.collisionMask).Count > 0)
+        if (myMover.CollideArea(Vector2Int.RoundToInt(velocity.normalized)).Count > 0)
         {
             Vector2 newDown = velocity;
 

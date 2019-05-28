@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PixelPerfectMover))]
+[RequireComponent(typeof(AlignedBody2D))]
 public class PassiveObject : MonoBehaviour
 {
     [Header("Dynamic")]
-    [SerializeField] PixelPerfectMover myMover;
+    [SerializeField] AlignedBody2D myMover;
     [SerializeField] bool sleeping;
     public Vector2 velocity;
 
     private void Awake()
     {
-        myMover = GetComponent<PixelPerfectMover>();
+        myMover = GetComponent<AlignedBody2D>();
         sleeping = true;
     }
 
@@ -23,7 +23,7 @@ public class PassiveObject : MonoBehaviour
             velocity.y += Physics2D.gravity.y * Time.fixedDeltaTime;
 
             myMover.Move(velocity * Time.fixedDeltaTime);
-            if (myMover.CollideArea(velocity.y > 0 ? Vector2Int.up : Vector2Int.down, myMover.collisionMask).Count > 0)
+            if (myMover.CollideArea(velocity.y > 0 ? Vector2Int.up : Vector2Int.down).Count > 0)
             {
                 if (velocity.y < 0.0f)
                 {
@@ -32,7 +32,7 @@ public class PassiveObject : MonoBehaviour
 
                 velocity.y = 0.0f;
             }
-            if (myMover.CollideArea(velocity.x > 0 ? Vector2Int.right : Vector2Int.left, myMover.collisionMask).Count > 0)
+            if (myMover.CollideArea(velocity.x > 0 ? Vector2Int.right : Vector2Int.left).Count > 0)
             {
                 velocity.x *= -0.5f;
             }
@@ -40,7 +40,7 @@ public class PassiveObject : MonoBehaviour
         else
         {
             velocity = Vector2.zero;
-            if (myMover.CollideArea(Vector2Int.down, myMover.collisionMask).Count == 0)
+            if (myMover.CollideArea(Vector2Int.down).Count == 0)
             {
                 Impulse(Vector2.zero);
             }

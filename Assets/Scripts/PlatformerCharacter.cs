@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Analytics;
 
-[RequireComponent(typeof(PixelPerfectMover))]
+[RequireComponent(typeof(AlignedBody2D))]
 public class PlatformerCharacter : MonoBehaviour
 {
     [Header("Inscribed")]
@@ -16,7 +16,7 @@ public class PlatformerCharacter : MonoBehaviour
 
     [Header("Dynamic")]
     [SerializeField] Vector2 pendingMovement;
-    [SerializeField] PixelPerfectMover myMover;
+    [SerializeField] AlignedBody2D myMover;
     [SerializeField] MultiPartCharacter myMultipart;
     [SerializeField] Vector2 velocity;
     [SerializeField] float walkDirection;
@@ -31,7 +31,7 @@ public class PlatformerCharacter : MonoBehaviour
 
     private void Awake()
     {
-        myMover = GetComponent<PixelPerfectMover>();
+        myMover = GetComponent<AlignedBody2D>();
         myMultipart = GetComponent<MultiPartCharacter>();
     }
 
@@ -51,14 +51,14 @@ public class PlatformerCharacter : MonoBehaviour
             transform.localScale = scale;
         }
 
-        grounded = myMover.CollideArea(Vector2Int.down, myMover.collisionMask).Count > 0;
+        grounded = myMover.CollideArea(Vector2Int.down).Count > 0;
                     
-        if (myMover.CollideArea(velocity.y > 0.0f ? Vector2Int.up : Vector2Int.down, myMover.collisionMask).Count > 0)
+        if (myMover.CollideArea(velocity.y > 0.0f ? Vector2Int.up : Vector2Int.down).Count > 0)
         {
             velocity.y = 0.0f;
         }
 
-        if (myMover.CollideArea(velocity.x > 0.0f ? Vector2Int.right : Vector2Int.left, myMover.collisionMask).Count > 0)
+        if (myMover.CollideArea(velocity.x > 0.0f ? Vector2Int.right : Vector2Int.left).Count > 0)
         {
             velocity.x = 0.0f;
         }
@@ -116,7 +116,7 @@ public class PlatformerCharacter : MonoBehaviour
             }
             else
             {
-                velocity.x = Mathf.Clamp(velocity.x + walkDirection * walkSpeed * 5.0f * Time.fixedDeltaTime,
+                velocity.x = Mathf.Clamp(velocity.x + walkDirection * walkSpeed * 15.0f * Time.fixedDeltaTime,
                     -walkSpeed, walkSpeed);
             }
         }
@@ -140,7 +140,7 @@ public class PlatformerCharacter : MonoBehaviour
 
     private void Update()
     {
-        bool crushed = myMover.CollideArea(Vector2Int.zero, myMover.collisionMask).Count > 0;
+        bool crushed = myMover.CollideArea(Vector2Int.zero).Count > 0;
 
         if (crushed)
         {
@@ -187,7 +187,13 @@ public class PlatformerCharacter : MonoBehaviour
     {
         if (myMultipart.isCrouched && carried == null)
         {
-            foreach (Collider2D collider in myMover.CollideArea(Vector2Int.down, myMover.collisionMask))
+            // Overhead area is blocked
+            if (myMover.CollideArea(Vector2Int.up * 16).Count > 0)
+            {
+                return;
+            }
+
+            foreach (Collider2D collider in myMover.CollideArea(Vector2Int.down))
             {
                 Carriable carriable = collider.GetComponent<Carriable>();
                 if (!carriable)
@@ -248,7 +254,7 @@ public class PlatformerCharacter : MonoBehaviour
 
     bool CanStand()
     {
-        return myMover.CollideArea(Vector2Int.up * standRequiredHeadroom, myMover.collisionMask).Count == 0;
+        return myMover.CollideArea(Vector2Int.up * standRequiredHeadroom).Count == 0;
     }
 
     public Vector2 GetMovement(bool consume = true)

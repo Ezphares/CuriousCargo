@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.Tilemaps;
 
+[RequireComponent(typeof(AlignedBody2D))]
 public class FollowCamera : MonoBehaviour
 {
     [Header("Inscribed")]
@@ -11,10 +12,12 @@ public class FollowCamera : MonoBehaviour
 
     [Header("Dynamic")]
     [SerializeField] Camera myCamera;
+    [SerializeField] AlignedBody2D myBody;
 
     private void Awake()
     {
         myCamera = GetComponent<Camera>();
+        myBody = GetComponent<AlignedBody2D>();
     }
 
     private void Start()
@@ -65,6 +68,6 @@ public class FollowCamera : MonoBehaviour
             }
         }
 
-        transform.position = target;
+        myBody.Move((target - transform.position) * 0.1f);
     }
 }

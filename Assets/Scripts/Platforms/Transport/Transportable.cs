@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(PixelPerfectMover))]
+[RequireComponent(typeof(AlignedBody2D))]
 public class Transportable : MonoBehaviour
 {
     [Header("Dynamic")]
-    [SerializeField] PixelPerfectMover myMover;
+    [SerializeField] AlignedBody2D myMover;
     [SerializeField] ITransporter currentTransporter;
 
     private void Awake()
     {
-        myMover = GetComponent<PixelPerfectMover>();
+        myMover = GetComponent<AlignedBody2D>();
     }
 
     private void FixedUpdate()
@@ -20,7 +20,7 @@ public class Transportable : MonoBehaviour
             Connect(null);
         }
 
-        List<Collider2D> colliders = myMover.CollideArea(Vector2Int.down, myMover.collisionMask);
+        List<Collider2D> colliders = myMover.CollideArea(Vector2Int.down);
         ITransporter newTransporter = null;
 
         foreach (Collider2D collider in colliders)

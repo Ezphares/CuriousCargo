@@ -10,6 +10,7 @@ public class PlatformerCharacter : MonoBehaviour
     public float walkSpeed;
     public float jumpVelocity;
     public float fallGravityModifier = 1.25f;
+    public float jumpLeeway = 0.1f;
     public int standRequiredHeadroom = 16;
     public Transform carryPivot;
     public Collider2D carryCollider;
@@ -28,6 +29,7 @@ public class PlatformerCharacter : MonoBehaviour
     [SerializeField] bool shouldThrow;
     [SerializeField] Carriable carried;
     [SerializeField] Vector3 facing;
+    [SerializeField] float currentJumpLeeway;
 
     private void Awake()
     {
@@ -75,6 +77,7 @@ public class PlatformerCharacter : MonoBehaviour
             walkDirection = 0.0f;
         }
 
+        bool crouchChanged = false;
         if (myMultipart.isCrouched != shouldCrouch)
         {
             if (shouldCrouch)
@@ -86,6 +89,7 @@ public class PlatformerCharacter : MonoBehaviour
             {
                 myMultipart.isCrouched = false;
             }
+            crouchChanged = myMultipart.isCrouched == shouldCrouch;
         }
 
 
@@ -94,13 +98,22 @@ public class PlatformerCharacter : MonoBehaviour
 
         velocity.y += Physics2D.gravity.y * gravityModifier * Time.fixedDeltaTime;
 
+        if (grounded)
+        {
+            currentJumpLeeway = 1.0f;
+        }
+        else
+        {
+            currentJumpLeeway -= Time.fixedDeltaTime / jumpLeeway;
+        }
 
-        if (shouldJump && grounded && !myMultipart.isCrouched)
+
+        if (shouldJump && currentJumpLeeway > 0.0f && !myMultipart.isCrouched)
         {
             velocity.y = jumpVelocity;
             sustainedJump = true;
             grounded = false;
-            
+            currentJumpLeeway = 0.0f;
         }
         shouldJump = false;
 
@@ -121,18 +134,22 @@ public class PlatformerCharacter : MonoBehaviour
             }
         }
 
-        if (shouldPickUp)
+        // Don't change crouch and pickup same frame, colliders are not updated
+        if (!crouchChanged)
         {
-            TryPickUp();
+            if (shouldPickUp)
+            {
+                TryPickUp();
 
-            shouldPickUp = false;
-        }
+                shouldPickUp = false;
+            }
 
-        if (shouldThrow)
-        {
-            TryThrow();
-            
-            shouldThrow = false;
+            if (shouldThrow)
+            {
+                TryThrow();
+
+                shouldThrow = false;
+            }
         }
 
         myMover.Move(velocity * Time.fixedDeltaTime);
